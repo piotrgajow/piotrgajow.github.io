@@ -1,0 +1,23 @@
+.emphasis {
+    font-weight: bold;
+    font-size: larger;
+    color: lightseagreen;
+}
+
+.dimmed {
+    color: #b4b4b4;
+}
+
+.spacing-top-50 {
+    margin-top: 50px !important;
+}
+
+.spacing-top-25 {
+    margin-top: 25px !important;
+}
+
+.source {
+    position: fixed;
+    bottom: 0;
+    font-size: 0.25em;
+}

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guide to Web Components</title>
+
+    <meta name="author"
+          content="Piotr Gajowniczek">
+    <meta name="apple-mobile-web-app-capable"
+          content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet"
+          href="../reveal.js/css/reset.css">
+    <link rel="stylesheet"
+          href="../reveal.js/css/reveal.css">
+    <link rel="stylesheet"
+          href="../reveal.js/css/theme/black.css"
+          id="theme">
+    <link rel="stylesheet"
+          href="../reveal.js/lib/css/monokai.css">
+
+    <link rel="stylesheet"
+          href="../custom.css">
+
+    <script>
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? '../css/print/pdf.css' : '../css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <script src="../reveal.js/lib/js/html5shiv.js"></script>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <section>
+                    <h1>Guide to</h1>
+                    <h1>Web Components</h1>
+                </section>
+                <section>
+                    <p><span class="emphasis">Web Components</span> is a suite of different technologies allowing you to create reusable custom elements — with their functionality encapsulated away from the rest of your code — and utilize them in your web apps.</p>
+                    <p class="source">https://developer.mozilla.org/en-US/docs/Web/Web_Components</p>
+                </section>
+                <section>
+                    <h2>Technologies</h2>
+                    <ul>
+                        <li class="emphasis">Custom Elements</li>
+                        <li>Shadow DOM</li>
+                        <li>Custom Event API</li>
+                        <li>ES Modules</li>
+                        <li>CSS Custom Properties</li>
+                        <li>CSS Shadow Parts</li>
+                        <li>HTML Content Template</li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h1>Custom Elements</h1>
+                </section>
+                <section>
+                    <h2>Custom Elements</h2>
+                    <img src="img/ciu-custom-elements.png"
+                         alt="Custom Elements">
+                </section>
+                <section>
+                    <pre>
+                        <code class="javascript">class MyCustomElement extends HTMLElement {
+    connectedCallback() {}
+    disconnectedCallback() {}
+    adoptedCallback() {}
+    static get observedAttributes() { return [...]; }
+    attributeChangedCallback(name, oldValue, newValue) {}
+}
+customElements.define("my-custom-element", MyCustomElementClass);</code>
+                    </pre>
+                    <p>
+                        Custom elements must have "-" in tag!
+                    </p>
+                </section>
+                <section>
+                    <pre>
+                        <code class="html"><my-custom-element custom-prop="123"></my-custom-element></code>
+                    </pre>
+                    <pre>
+                        <code class="html"><div is="my-custom-element" custom-prop="123"></div></code>
+                    </pre>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h1>Shadow DOM</h1>
+                </section>
+                <section>
+                    <h2>Shadow DOM</h2>
+                    <img src="img/ciu-shadow-dom.png"
+                         alt="Shadow DOM">
+                </section>
+                <section>
+                    <ul>
+                        <li>Encapsulation of CSS styles (No more !important)</li>
+                        <li>Encapsulation of HTML structure</li>
+                        <li>Flexibility of slots</li>
+                    </ul>
+                </section>
+                <section>
+                    <pre>
+                        <code class="javascript">const shadowRoot = this.attachShadow({ mode: "open" });
+element.shadowRoot === shadowRoot // true</code>
+                    </pre>
+                    <pre>
+                        <code class="javascript">const shadowRoot = this.attachShadow({ mode: "closed" });
+element.shadowRoot === null // true</code>
+                    </pre>
+                </section>
+                <section>
+                    <pre>
+                        <code class="html"><my-component>
+    <p slot="title">Title</p>
+    <p slot="content">Lorem ipsum</p>
+</my-component></code>
+                    </pre>
+                    <pre>
+                        <code class="html"><slot name="title"></slot>
+<slot name="content"></slot></code>
+                    </pre>
+                </section>
+            </section>
+                <section>
+                <section>
+                    <h1>Custom Event API</h1>
+                </section>
+                <section>
+                    <h2>Custom Event API</h2>
+                    <img src="img/ciu-custom-events.png"
+                         alt="Custom Event API">
+                </section>
+                <section>
+                    <p>Communication between web component and its host</p>
+                    <pre>
+                        <code class="javascript">const eventData = {
+    detail: { x: 19, text: "works" },
+    bubbles: true,
+    cancelable: false,
+    composed: true
+};
+const customEvent = new CustomEvent("my-event", eventData);</code>
+                        <code class="javascript">element.addEventListener("my-event", onMyEventHandlerFunction);</code>
+                    </pre>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h1>ES Modules</h1>
+                </section>
+                <section>
+                    <h2>ES Modules</h2>
+                    <img src="img/ciu-modules.png"
+                         alt="ES Modules">
+                </section>
+                <section>
+                    <ul>
+                        <li>Loaded and executed only once</li>
+                        <li>Use strict mode automatically</li>
+                    </ul>
+                    <pre>
+                        <code class="javascript">export const color = "red";
+import { color } from "./path/to/file"</code>
+                        <code class="html"><script type="module" src="./path/to/file"></script></code>
+                    </pre>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h1>CSS Custom Properties</h1>
+                </section>
+                <section>
+                    <h2>CSS Custom Properties</h2>
+                    <img src="img/ciu-css-vars.png"
+                         alt="CSS Custom Properties">
+                </section>
+                <section>
+                    <ul>
+                        <li>Reuse of css properties</li>
+                        <li>Pierce Shadow DOM</li>
+                        <li>Easy access from javascript code</li>
+                    </ul>
+                </section>
+                <section>
+                    <pre>
+                        <code class="css">:root {
+    --color-primary: darkblue;
+}
+
+p {
+    color: var(--color-primary);
+}</code>
+                        <code class="javascript">document.documentElement
+    .style.setProperty("--color-primary", "red");</code>
+                    </pre>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h1>CSS Shadow Parts</h1>
+                </section>
+                <section>
+                    <h2>CSS Shadow Parts</h2>
+                    <img src="img/ciu-shadow-part.png"
+                         alt="CSS Shadow Parts">
+                </section>
+                <section>
+                    <pre>
+                        <code class="html"><p part="title">Title</p>
+<p part="content">Lorem ipsum</p></code>
+                        <code class="css">my-element::part(title) {
+    color: red;
+}
+
+my-element::part(content) {
+    color: blue;
+}</code>
+                    </pre>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h1>HTML Content Template</h1>
+                </section>
+                <section>
+                    <h2>HTML Content Template</h2>
+                    <img src="img/ciu-templates.png"
+                         alt="HTML Content Template">
+                </section>
+                <section>
+                    <pre>
+                        <code class="html"><template id="my-template">
+    <div>
+        <p>Lorem Ipsum</p>
+    </div>
+</template></code>
+                        <code class="javascript">const template = document.getElementById("my-template");
+const content = template.content.cloneNode(true);
+someElement.appendChild(content);</code>
+                    </pre>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2>Why use Web Components?</h2>
+                    <ul>
+                        <li>Better application architecture</li>
+                        <li>Code reuse and sharing</li>
+                        <li>Consistent UI/UX (design system)</li>
+                        <li>Encapsulation</li>
+                        <li>Less problems with name clashes (css, js)</li>
+                        <li>Good integration with major frameworks and libraries - <a href="https://custom-elements-everywhere.com">https://custom-elements-everywhere.com</a></li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>For further reading</h2>
+                    <ul>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components">https://developer.mozilla.org/en-US/docs/Web/Web_Components</a></li>
+                        <li><a href="https://dev.to/thepassle/web-components-from-zero-to-hero-4n4m">https://dev.to/thepassle/web-components-from-zero-to-hero-4n4m</a></li>
+                        <li><a href="https://github.com/mateusortiz/webcomponents-the-right-way">https://github.com/mateusortiz/webcomponents-the-right-way</a></li>
+                        <li><a href="https://github.com/webcomponents/gold-standard/wiki">https://github.com/webcomponents/gold-standard/wiki</a></li>
+                        <li><a href="https://developers.google.com/web/fundamentals/web-components/best-practices">https://developers.google.com/web/fundamentals/web-components/best-practices</a></li>
+                    </ul>
+                </section>
+            </section>
+        </div>
+    </div>
+
+    <script src="../reveal.js/js/reveal.js"></script>
+
+    <script>
+        Reveal.initialize({
+            controls: true,
+            slideNumber: true,
+            center: true,
+            hash: true,
+            dependencies: [
+                {src: '../reveal.js/plugin/markdown/marked.js'},
+                {src: '../reveal.js/plugin/markdown/markdown.js'},
+                {src: '../reveal.js/plugin/highlight/highlight.js'},
+                {src: '../reveal.js/plugin/notes/notes.js', async: true}
+            ]
+        });
+    </script>
+</body>
+</html>
